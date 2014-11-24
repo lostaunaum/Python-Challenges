@@ -127,4 +127,93 @@ for turn in range(5):
             board[guess_row][guess_col] = "X"
 
 
-################## Battle-Ship Against the AI ##################
+################## Battle-Ship Player vs Player ##################
+
+from random import randint
+
+#setting up the board
+board = []
+
+for x in range(5):
+    board.append(["O"] * 5)
+
+def print_board(board):
+    for row in board:
+        print " ".join(row)
+
+def random_row(board):
+    return randint(0, len(board) - 1)
+
+def random_col(board):
+    return randint(0, len(board[0]) - 1)
+#these will be the coordinates of the submarines from each player
+player1_submarine_row = random_row(board)
+player1_submarine_col = random_col(board)
+
+player2_submarine_row = random_row(board)
+player2_submarine_col = random_col(board)
+
+if player1_submarine_row == player2_submarine_row:
+    player2_submarine_row = random_row(board)
+elif player1_submarine_col == player2_submarine_col:
+    player2_submarine_col = random_col(board)
+
+print "Let's play Battleship! By Marco A. Lostaunau"
+
+#game logic
+for turn in range(4):
+    #we are giving the players a total of 4 turns
+    if turn % 2 == 0: #player one will be even
+        print "Player 1's turn", turn + 1 #printing the current turn
+        print_board(board)
+        #prompting the user to ask for input
+        player1_guess_row = int(raw_input("Player 1 Guess Row:"))
+        player1_guess_col = int(raw_input("Player 1 Guess Col:"))
+
+        #if user guess is correct reacting
+        if player1_guess_row == player2_submarine_row and player1_guess_col == player2_submarine_col:
+            print "Congratulations! You sunk Player's 2 battleship!"
+            break
+        else:
+            #making sure the guess is within the board
+            if (player1_guess_row < 0 or player1_guess_row > 4) or (player1_guess_col < 0 or player1_guess_col > 4):
+                print "Oops, that's not even in the ocean."
+                turn -= 1
+                
+            #making sure the user does not guess same twice
+            elif(board[player1_guess_row][player1_guess_row] == "X"):
+                print "You guessed that one already."
+                turn -= 1
+                
+            #if not correct inform user print board again and set new x for the value
+            else:
+                print "You missed Player's 2 battleship!"
+                board[player1_guess_row][player1_guess_col] = "X"
+    else: #players two logic going to try and combine it in one
+        print "Player 2's turn", turn + 1 #printing the current turn
+        print_board(board)
+        #prompting the user to ask for input
+        player2_guess_row = int(raw_input("Player 2 Guess Row:"))
+        player2_guess_col = int(raw_input("Player 2 Guess Col:"))
+
+        #if user guess is correct reacting
+        if player2_guess_row == player1_submarine_row and player2_guess_col == player1_submarine_col:
+            print "Congratulations! You sunk Player's 2 battleship!"
+            break
+        else:
+            #making sure the guess is within the board
+            if (player2_guess_row < 0 or player2_guess_row > 4) or (player2_guess_col < 0 or player2_guess_col > 4):
+                print "Oops, that's not even in the ocean."
+                turn -= 1
+                
+            #making sure the user does not guess same twice
+            elif(board[player2_guess_row][player2_guess_row] == "-"):
+                print "You guessed that one already."
+                turn -= 1
+                
+            #if not correct inform user print board again and set new x for the value
+            else:
+                print "You missed Player's 1 battleship!"
+                board[player2_guess_row ][player2_guess_col] = "-"
+
+################## Battle-Ship Player vs Player ##################
